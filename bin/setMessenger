@@ -1,0 +1,17 @@
+const messenger = require('../messenger/init');
+
+//Whitelist, must be first
+messenger.whiteList();
+
+//reset all
+messenger.deleteGetStarted();
+messenger.deleteGreeting();
+messenger.deleteMenu();
+
+//New settings
+messenger.getStarted();
+messenger.greeting();
+messenger.menu();
+
+
+

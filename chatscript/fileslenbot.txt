@@ -1,0 +1,4 @@
+# underlying conversation system
+../botdata/
+# quibble ability
+RAWDATA/QUIBBLE/

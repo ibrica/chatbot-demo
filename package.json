@@ -1,0 +1,28 @@
+{
+  "name": "chatbot-demo",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/server"
+  },
+  "dependencies": {
+    "@slack/client": "^3.9.0",
+    "body-parser": "~1.15.2",
+    "config": "^1.24.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "ejs": "~2.5.2",
+    "express": "~4.14.0",
+    "http": "0.0.0",
+    "morgan": "~1.7.0",
+    "node-telegram-bot-api": "^0.27.0",
+    "request": "^2.79.0",
+    "serve-favicon": "~2.3.0"
+  },
+  "devDependencies": {
+    "@types/config": "0.0.32",
+    "@types/debug": "0.0.29",
+    "@types/express": "^4.0.35",
+    "@types/request": "0.0.40"
+  }
+}

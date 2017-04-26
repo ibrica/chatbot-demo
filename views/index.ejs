@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/css/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+    <p>Welcome to <%= title + ' server!' %></p>
+
+    <form class="form-inline">
+      <label class="sr-only" for="inlineFormInput">Chat message:</label>
+      <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput" placeholder="Jane Doe">
+
+      <button type="submit" class="btn btn-primary">Send</button>
+    </form>
+    <h2> Bot messages </h2>
+    <div id="messages">
+      <ul class="list-group">
+        <% for (let message of messages) { %>
+            <li class="list-group-item">message</li>
+        <% } %>
+      </ul>   
+    </div>
+  </body>
+</html>

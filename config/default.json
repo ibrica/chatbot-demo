@@ -1,0 +1,29 @@
+{
+    "facebook": {
+        "active": true,
+        "appSecret": "Facebook secret",
+        "pageAccessToken": "Facebook token",
+        "validationToken": "Facebook Validation Token",
+        "port": 8442,
+        "serverURL": "https://graph.facebook.com/v2.6/me/messages"
+    },
+    "telegram": {
+        "active": false,
+        "token": "YOUR_TOKEN",
+        "port": 8443
+    },
+    "slack": {
+        "active": true,
+        "token": "YOUR_TOKEN",
+        "port": 8444
+    },
+    "httpPort": 3020,
+    "sslPort": 3043,
+    "chatscript": {
+        "host": "0.0.0.0",
+        "port": 1024,
+        "bot": "testbot"
+    },
+    "email": "YOUR_EMAIL",
+    "url": "YOUR_URL"
+}

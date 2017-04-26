@@ -1,0 +1,5 @@
+#!/bin/bash
+cd ./chatscript/chatscript/BINARIES
+# if it is new version change permissions
+chmod +x LinuxChatScript64
+./LinuxChatScript64
