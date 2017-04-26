@@ -12,6 +12,12 @@ router
     .get('/fb/hook', controller.subscribe)
 
     .post('/fb/hook', controller.receive)
+
+    //telegram hooks
+    .post('/tg/hook', controllers.tgReceive);
+
+    //web demo
+    .post('/web/message', controller.message)
     
 
 export default router;

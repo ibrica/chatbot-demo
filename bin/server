@@ -14,7 +14,11 @@ const app = require('../express/app'),
 const debug = debuger('chatbot:server'),
     config = require('config');
 
-require('../bot'); //Now start bot
+//Now start bot
+require('../bot');
+
+//Run chatscript server
+require('../chatscript/run');
 
 
 /**

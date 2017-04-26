@@ -11,7 +11,7 @@ const net = require('net'),
     chatscriptConfig = { port: cs.port, host: cs.host, allowHalfOpen: true },
     chatscriptBot = cs.bot,
     spawn = require('child_process').spawn,
-    chatscript = spawn('./runScript'); //path is from process home folder
+    chatscript = spawn('./chatscript/runScript'); //path is from process home folder
 
 //Start chatscript
 chatscript.stdout.on('data', (data) => {

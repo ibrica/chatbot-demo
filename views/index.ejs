@@ -1,27 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
+<html>
+<head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/css/style.css' />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <style>
+        body { padding:3% }
+    </style>
   </head>
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title + ' server!' %></p>
-
-    <form class="form-inline">
+    <div class="alert alert-danger fade in" style="display:none;>
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Error!</strong> A problem has been occurred while submitting your data.
+    </div>
+    <form class="form-inline" id="frm">
       <label class="sr-only" for="inlineFormInput">Chat message:</label>
-      <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="inlineFormInput" placeholder="Jane Doe">
-
+      <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="txt" placeholder="Your message">
       <button type="submit" class="btn btn-primary">Send</button>
     </form>
     <h2> Bot messages </h2>
-    <div id="messages">
-      <ul class="list-group">
-        <% for (let message of messages) { %>
-            <li class="list-group-item">message</li>
-        <% } %>
-      </ul>   
+    <div>
+      <ul class="list-group" id="messages"> </ul>
     </div>
+    <script>
+      $('#frm').post( "/web/message", function(data) {
+          $('alert').hide();
+          $("#messages").append("<li class='list-group-item'> You: " + $("#txt").val() + '</li>');
+          $("#messages").append("<li class='list-group-item'>" + data + '</li>');
+        })
+        .fail(function() {
+          $('alert').show();
+      });
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </body>
 </html>
