@@ -22,7 +22,7 @@ require('../bot'); //Now start bot
  */
 
 const port = normalizePort(process.env.PORT || config.sslPort),
-    httpPort = normalizePort(config.sslPort || 3000);
+    httpPort = normalizePort(config.httpPort || 3000);
 
 //app.set('port', port);
 
