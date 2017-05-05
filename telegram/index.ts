@@ -7,7 +7,9 @@ const config = require('config'),
       PORT  = telegramConfig.port,
       URL = (process.env.SERVER_URL) || config.url 
 
-//throw new Error('do not listen to this port, change facebook also and open ports on server')
+/**
+ * Get insstance of Telegram API client
+ */
 export function get(){
     let options = {
         

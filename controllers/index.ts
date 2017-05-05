@@ -11,6 +11,16 @@ const facebook = require('config').get('facebook'), //JSON types in controllers
     messenger = Messenger.getInstance();
   
 export default class IndexController {
+
+    /**
+     * Index page
+     * @param req 
+     * @param res 
+     */
+    static index(req:Request, res:Response){
+      res.render('index', { title: 'chatbot-demo' });
+    }
+
     /**
      * subscribe to FB postbacks
      * @param req 
@@ -80,7 +90,21 @@ export default class IndexController {
         }
     };
 
-    
+    /**
+     * Post from web page
+     * @param req 
+     * @param res 
+     */
+    static web(req:Request, res:Response){
+        let message = req.body.message;
+        if(!message) return res.sendStatus(400); //Bad request
+        
+        bot.webReply(message, (err, reply)=>{
+            if(err) return res.sendStatus(500);
+            //Now reply
+            res.send(reply);
+        });     
+    }   
 }
 
 

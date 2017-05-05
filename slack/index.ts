@@ -5,8 +5,10 @@ import {RtmClient,CLIENT_EVENTS, RTM_EVENTS} from '@slack/client';
 const config = require('config'),
       token = config.get('slack').token;
 
+let CONNECTED:Boolean = false;
 
-const rtm = new RtmClient(token, {logLevel: 'debug'});
+
+export const rtm = new RtmClient(token, {logLevel: 'debug'});
 
 // The client will emit an RTM.AUTHENTICATED event on successful connection, with the `rtm.start` payload if you want to cache it
 rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
@@ -15,12 +17,23 @@ rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
 
 // you need to wait for the client to fully connect before you can send messages
 rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, function () {
-  rtm.sendMessage("Hello!", "#general");
+  CONNECTED = true;
 });
-https://slackapi.github.io/node-slack-sdk/bots
-https://github.com/slackapi/node-slack-sdk
-
 
 rtm.start();
 
-export let client = rtm, events = RTM_EVENTS;
+export let SLACK_EVENTS = CLIENT_EVENTS.RTM;
+
+/**
+ * Send Message to Slack
+ * @param message Send to channel
+ * @param channel 
+ */
+export function sendToSlack(message:String, channel:String) {
+    channel = channel ||  "#general";
+    if (CONNECTED){
+      rtm.sendMessage(message, channel);
+    } else {
+      console.error("Not connected to Slack! Message can't be send!");
+    }
+}

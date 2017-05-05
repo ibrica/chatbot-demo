@@ -35,7 +35,7 @@ chatscript.on('close', (code) => {
  * @param {string} msg 
  * @param {function} cb 
  */
-export function reply(client, msg, cb) {
+export function reply(client:String, msg:String, cb:Function) {
     var chatscriptSocket = net.createConnection(chatscriptConfig, () => {
         var payload = client + '\x00' + chatscriptBot + '\x00' + msg + '\x00';
         chatscriptSocket.write(payload);

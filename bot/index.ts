@@ -1,9 +1,9 @@
 "use strict";
 /**
- * bot initialization
+ * Bot initialization
  */
 import Messenger from '../messenger';
-import * as chatscript from '../chatscript/start';
+import * as chatscript from '../chatscript/run';
 
 
 const
@@ -29,44 +29,56 @@ if (config.facebook.active){
 }
 
 if (config.telegram.active){
-//Needed for telegram webhooks
-//create telegram proxy
+    //Needed for telegram webhooks
+    //create telegram proxy
     let telegram = require('../telegram').get();
 
-    telegram.on('text', function(msg) {
+    telegram.on('text', function(message) {
 
-        const chatId = msg.chat.id;
-/*
-        chatscript.reply(fromId, text, (err, reply)=>{
+        //Reply to the same chat
+        const chatId = message.chat.id;
+
+        chatscript.reply(chatId, message.text, (err, reply)=>{
             if (err) return console.error(err);
-
+            //Send message to chat
             telegram
                 .sendMessage(chatId, reply)
                 .catch  ( err => console.error(err)); //promise
-        });*/
-    });
-
-}
-
-if (config.slack.active) {
-    const   SLACK = require('../slack'),
-            slack = SLACK.client,
-            SLACK_EVENTS = SLACK.events;
-
-    slack.on(SLACK_EVENTS.MESSAGE, message => {
-        // Listens to all `message` events from the team
-        console.log(message);
-        slack.sendMessage('this is a test message', 'C0CHZA86Q', messageSent => {
-            // optionally, you can supply a callback to execute once the message has been sent
         });
     });
 
-    slack.on(SLACK_EVENTS.CHANNEL_CREATED,  (message) => {
-        // Listens to all `channel_created` events from the team
-        debug(message);
-    });
 }
 
+//Slack Bot
+if (config.slack.active) {
+    //Import can't be in statement so using require
+    const slack = require('../slack'),
+          SLACK_EVENTS = slack.SLACK_EVENTS,
+          rtm = slack.rtm,
+          sendToSlack = slack.sendToSlack;
 
 
+    rtm.on(SLACK_EVENTS.MESSAGE, message => {
+        // Listens to all `message` events from the team
+        //Don't respond to own message or channel joins
+        if (message.user === rtm.activeUserId || message.subtype === "channel_join") return;
 
+        chatscript.reply(message.user, message.text, (err, reply)=>{
+            if (err) return console.error(err);            
+            sendToSlack('this is a test message', message.channel);
+        });
+
+    });
+
+}
+
+/**
+ * Reply to web message
+ * @param message 
+ * @param cb 
+ */
+export function webReply(message:String, cb:Function){
+        chatscript.reply('WebId', message, (err, reply)=>{
+                cb(err, reply);
+        });
+}

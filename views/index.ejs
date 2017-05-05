@@ -15,30 +15,38 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title + ' server!' %></p>
-    <div class="alert alert-danger fade in" style="display:none;>
+    <div class="alert alert-danger fade in" style="display:none;">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         <strong>Error!</strong> A problem has been occurred while submitting your data.
     </div>
     <form class="form-inline" id="frm">
       <label class="sr-only" for="inlineFormInput">Chat message:</label>
-      <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="txt" placeholder="Your message">
-      <button type="submit" class="btn btn-primary">Send</button>
+      <input type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" id="message" placeholder="Your message" size="100">
+      <button type="submit"class="btn btn-primary">Send</button>
     </form>
     <h2> Bot messages </h2>
     <div>
-      <ul class="list-group" id="messages"> </ul>
+      <ul class="list-group" id="m essages"> </ul>
     </div>
-    <script>
-      $('#frm').post( "/web/message", function(data) {
-          $('alert').hide();
-          $("#messages").append("<li class='list-group-item'> You: " + $("#txt").val() + '</li>');
-          $("#messages").append("<li class='list-group-item'>" + data + '</li>');
-        })
-        .fail(function() {
-          $('alert').show();
-      });
-    </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(()=>{
+        $('#frm')
+          .submit( (e) => {
+            e.preventDefault();
+            let message = $("#message").val();
+            $.post('/web/message', {message})
+              .done( (data) => {
+                $('alert').hide();
+                $("#messages").append("<li class='list-group-item'> You: " + $("#txt").val() + '</li>');
+                $("#messages").append("<li class='list-group-item'>" + data + '</li>');         
+              })
+              .fail(function() {
+                $('alert').show();
+              });
+        });
+      });       
+    </script>
   </body>
 </html>
