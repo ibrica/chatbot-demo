@@ -1,7 +1,7 @@
 # Typescript Messenger, Slack, Telegram bot demo
 
-This is a demo chatbot integrated with Messenger, Slack, Telegram but also with web interface to chat with bot.
-Bot uses Bruce Wilcox's chatscript chatbot engine that has won the Loebner's 4 times and is used for NLP in variety of tech startups.
+This is a demo chatbot integrated with Messenger, Slack, Telegram and with web interface to directly chat with bot.  
+Bot uses Bruce Wilcox's chatscript, the chatbot engine that has won the Loebner's 4 times and is used for NLP in variety of tech startups.
 
 
 
