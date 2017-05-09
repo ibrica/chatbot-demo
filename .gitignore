@@ -1,7 +1,7 @@
 .idea/
 .vscode/
 node_modules/
-chatscript/chatscript/
+chatscript/ChatScript/
 logs/
 public/fb/
 *.map
