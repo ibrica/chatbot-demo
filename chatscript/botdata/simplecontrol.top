@@ -1,17 +1,17 @@
-# this function is executed once for every new user chatting with testbot
-outputmacro: testbot()  # you get testbot by default
+# this function is executed once for every new user chatting with Harry
+outputmacro: Harry()  # you get Harry by default
 $cs_token = #DO_INTERJECTION_SPLITTING  | #DO_SUBSTITUTE_SYSTEM   | #DO_NUMBER_MERGE | #DO_DATE_MERGE  | #DO_PROPERNAME_MERGE  | #DO_SPELLCHECK  | #DO_PARSE 
 
 ^addtopic(~introductions)
 $cs_control_main = ~control
 #  $cs_control_post = ~XPOSTPROCESS  # uncomment to enable talk
 $userprompt = ^"%user: >"
-$botprompt = ^"Testbot: "
+$botprompt = ^"Harry: "
 
 table: defaultbot (^name)
 ^createfact(^name defaultbot defaultbot)
 DATA:
-testbot
+Harry
 
 topic: ~control system ()
 

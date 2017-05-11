@@ -1,0 +1,76 @@
+/**
+ * Run node telnet/server and then telnet to localhost: 2000 and chat with the bot "use strict";
+ * Plain JS
+ */
+
+const net = require("net"),
+    bot = require("../bot");
+
+
+var sockets = [];
+
+var receiveData = function(socket, data) {
+    // Handle incoming messages.
+    var message = ("" + data).trim();
+    //TODO: catch commands message.indexOf(":")===0
+    if (message.indexOf("/quit") === 0 || data.toString('hex', 0, data.length) === "fff4fffd06") {
+        socket.end("Good-bye!\n");
+        return;
+    }
+
+
+    // Use the remoteIP as the name since the PORT changes on ever new connection.
+    bot.reply(socket.remoteAddress, message, function(err, reply) {
+
+        if (err) reply = err; //Error is plain string
+        // Find the right socket
+        var i = sockets.indexOf(socket);
+        var soc = sockets[i];
+
+        soc.write("\nBot> " + reply + "\n");
+        soc.write("You> ");
+
+    });
+};
+
+var closeSocket = (socket) => {
+    var i = sockets.indexOf(socket);
+    var soc = sockets[i];
+
+    console.log("User '" + soc.name + "' has disconnected.\n");
+
+    if (i != -1) {
+        sockets.splice(i, 1);
+    }
+};
+
+var newSocket = function(socket) {
+    socket.name = socket.remoteAddress + ":" + socket.remotePort;
+    console.log("User '" + socket.name + "' has connected.\n");
+
+    sockets.push(socket);
+
+    // Send a welcome message.
+    socket.write('Welcome to the Telnet server!\n');
+    socket.write("Hello " + socket.name + "! " + "Type /quit to disconnect.\n\n");
+
+
+    // Send their prompt.
+    socket.write("You> ");
+
+    socket.on('data', function(data) {
+        receiveData(socket, data);
+    });
+
+    // Handle disconnects.
+    socket.on('end', function() {
+        closeSocket(socket);
+    });
+
+};
+
+// Start the TCP server.
+var server = net.createServer(newSocket);
+
+server.listen(2000);
+console.log("TCP server running on port 2000.\n");

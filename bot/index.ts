@@ -17,14 +17,13 @@ const
 if (config.facebook.active){
     // Messenger emmited message recived event
     messenger.on('message', (senderID:string, message:object)=>{
-
+        //User defined
     });
-
 
 
     // Postbacks from clicks
     messenger.on('postback', (senderID:string, recipientID:string, payload:object)=>{
-    //User defined
+        //User defined
     });
 }
 
@@ -74,11 +73,13 @@ if (config.slack.active) {
 
 /**
  * Reply to web message
+ * @param client 
  * @param message 
  * @param cb 
  */
-export function webReply(message:String, cb:Function){
-        chatscript.reply('WebId', message, (err, reply)=>{
+export function reply(client:String, message:String, cb:Function){
+        chatscript.reply(client, message, (err, reply)=>{
                 cb(err, reply);
         });
 }
+

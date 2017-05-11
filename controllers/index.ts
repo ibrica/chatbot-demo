@@ -99,7 +99,7 @@ export default class IndexController {
         let message = req.body.message;
         if(!message) return res.sendStatus(400); //Bad request
         
-        bot.webReply(message, (err, reply)=>{
+        bot.reply(req.ip,message, (err, reply)=>{
             if(err) return res.sendStatus(500);
             //Now reply
             res.send(reply);

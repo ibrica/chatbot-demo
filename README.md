@@ -43,7 +43,15 @@ $ npm start
 
 ```
 
-Visit [http://localhost:3020](http://localhost:3020) or [https://localhost:3043](https://localhost:3043) to chat with bot
+Visit [http://localhost:3020](http://localhost:3020) or [https://localhost:3043](https://localhost:3043)  
+Before chatting, chatscript bot should be builded, send following messages (or use telnet)
+
+```sh
+:build 0
+:build Harry 
+```
+
+Now  you can test the bot, to change conversation modify chatscript/botdata files.
 
 ## Tests
 
