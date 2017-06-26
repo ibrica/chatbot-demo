@@ -5,13 +5,36 @@
  * Events - emit send_msg with msg
  */
 
-const net = require('net'),
-    config = require('config'),
-    cs = config.get('chatscript'),
+import * as net from 'net';
+import * as config from 'config';
+import {spawn} from 'child_process';
+import * as os from 'os';
+
+const
+    cs:any = config.get('chatscript'),
     chatscriptConfig = { port: cs.port, host: cs.host, allowHalfOpen: true },
-    chatscriptBot = cs.bot,
-    spawn = require('child_process').spawn,
-    chatscript = spawn('./chatscript/runScript'); //path is from process home folder
+    chatscriptBot = cs.bot;
+
+let chatscript:any;
+
+/**
+ * Start chatscript on running OS
+ */
+switch(os.platform()){
+    case "linux":
+        chatscript = spawn('./chatscript/runLinux'); //path is from process home folder
+        break;
+    case "darwin": //MacOS
+        chatscript = spawn('./chatscript/runMacOS');
+        break;
+    case "win32": //Windows any version
+        chatscript = spawn('./chatscript/runWindows.cmd');
+        break;
+    default:
+        console.error("Can't start Chatscript, unknown OS!");
+        process.exit(1);
+}
+    
 
 //Start chatscript
 chatscript.stdout.on('data', (data) => {

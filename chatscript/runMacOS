@@ -1,0 +1,5 @@
+#!/bin/bash
+cd ./chatscript/ChatScript/BINARIES
+# if it is new version change permissions
+chmod +x MacChatScript64
+./MacChatScript
