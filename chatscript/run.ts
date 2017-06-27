@@ -28,7 +28,7 @@ switch(os.platform()){
         chatscript = spawn('./chatscript/runMacOS');
         break;
     case "win32": //Windows any version
-        chatscript = spawn('./chatscript/runWindows.cmd');
+        chatscript = spawn('chatscript/ChatScript/BINARIES/chatscript.exe'); //spawn('cmd', ['/c', 'chatscript\\runWindows.cmd']);
         break;
     default:
         console.error("Can't start Chatscript, unknown OS!");
