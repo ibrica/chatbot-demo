@@ -53,6 +53,14 @@ Before chatting, chatscript bot should be builded, send following messages (or u
 
 Now  you can test the bot, to change conversation modify chatscript/botdata files.
 
+It is possible to connect to ChatScript over telnet, in this case run
+
+```sh
+$ npm run telnet
+$ telnet localhost 2000
+```
+
+
 ## Tests
 
 ```sh

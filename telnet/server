@@ -1,7 +1,8 @@
 /**
- * Run node telnet/server and then telnet to localhost: 2000 and chat with the bot "use strict";
+ * Run node telnet/server and then telnet to localhost: 2000 and chat with the bot 
  * Plain JS
  */
+"use strict";
 
 const net = require("net"),
     bot = require("../bot");

@@ -3,27 +3,30 @@ import * as TelegramBot from 'node-telegram-bot-api';
 
 const config = require('config'),
       telegramConfig = config.get('telegram'),
-      TOKEN =  telegramConfig.token,
-      PORT  = telegramConfig.port,
-      URL = (process.env.SERVER_URL) || config.url 
+      TOKEN =  telegramConfig.token;
+
+// Create a bot that uses 'polling' to fetch new updates
+const telegram = new TelegramBot(TOKEN, {polling:true});
+
 
 /**
- * Get insstance of Telegram API client
+ * Register event handler for received Telegram text messages
+ * @param cb Callback function
  */
-export function get(){
-    let options = {
-        
-        webHook: {
-            port: PORT,
-            key:  __dirname +  '/../ssl/key.pem',
-            cert: __dirname + '/../ssl/cert.pem'
-        }
-    };
+export function receiveTelegram(cb:Function) {
+    telegram.on('message', message => {
+      console.log("Received from Telegram: " + message.text);
+      cb(message.chat.id, message.text);
+    });
+}
 
-    var telegram = new TelegramBot(TOKEN, options);
-    //Controller?
-    telegram.setWebHook(`${URL}:${PORT}/tg/hook`, '../ssl/cert.pem');
-
-    return telegram;
-
-};
+/**
+ * Send Message to Telegram
+ * @param message Text to send
+ * @param chatId ID of the chat
+ */
+export function sendToTelegram(chatId:String, message:String) {
+    // send a message to the chat
+    telegram.sendMessage(chatId, message);
+}
+  

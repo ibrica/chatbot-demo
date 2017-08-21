@@ -6,3 +6,4 @@ logs/
 public/fb/
 *.map
 *.js
+*.local

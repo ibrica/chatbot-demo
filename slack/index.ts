@@ -3,17 +3,24 @@
  */
 import {RtmClient,CLIENT_EVENTS, RTM_EVENTS} from '@slack/client';
 const config = require('config'),
-      token = config.get('slack').token;
+      token = config.get('slack').token || '';
 
 let CONNECTED:Boolean = false;
 
 
-export const rtm = new RtmClient(token, {logLevel: 'debug'});
+export const rtm = new RtmClient(token, {logLevel: 'error'});
 
-// The client will emit an RTM.AUTHENTICATED event on successful connection, with the `rtm.start` payload if you want to cache it
-rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, function (rtmStartData) {
-  console.log(`Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}, but not yet connected to a channel`);
+
+let channel:String;
+
+// The client will emit an RTM.AUTHENTICATED event on successful connection, with the `rtm.start` payload
+rtm.on(CLIENT_EVENTS.RTM.AUTHENTICATED, (rtmStartData) => {
+  for (const c of rtmStartData.channels) {
+	  if (c.is_member && c.name ==='general') { channel = c.id }
+  }
+  console.log(`Slack: Logged in as ${rtmStartData.self.name} of team ${rtmStartData.team.name}`);
 });
+
 
 // you need to wait for the client to fully connect before you can send messages
 rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, function () {
@@ -22,7 +29,6 @@ rtm.on(CLIENT_EVENTS.RTM.RTM_CONNECTION_OPENED, function () {
 
 rtm.start();
 
-export let SLACK_EVENTS = CLIENT_EVENTS.RTM;
 
 /**
  * Send Message to Slack
@@ -36,4 +42,18 @@ export function sendToSlack(message:String, channel:String) {
     } else {
       console.error("Not connected to Slack! Message can't be send!");
     }
+}
+
+/**
+ * Register event handler for received Slack messages
+ * @param cb Callback function
+ */
+export function receiveSlack(cb:Function) {
+  rtm.on(RTM_EVENTS.MESSAGE, message => {
+    // Listens to all `message` events from the team
+    //Don't respond to own message or channel joins
+    if (message.user === rtm.activeUserId || message.subtype === "channel_join") return;      
+    console.log("Received from Slack: " + message.text);
+    cb(message.user, message.text, message.channel);
+  });
 }

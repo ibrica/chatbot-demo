@@ -16,8 +16,13 @@ const
 
 if (config.facebook.active){
     // Messenger emmited message recived event
-    messenger.on('message', (senderID:string, message:object)=>{
-        //User defined
+    messenger.on('message', (senderID:string, message:any)=>{
+        chatscript.reply(senderID, message.text, (err, reply)=>{
+            if (err) return console.error(err);            
+            //Send via send API
+            messenger.sendTextMessage(senderID, reply);
+        });
+
     });
 
 
@@ -30,21 +35,17 @@ if (config.facebook.active){
 if (config.telegram.active){
     //Needed for telegram webhooks
     //create telegram proxy
-    let telegram = require('../telegram').get();
+    const telegram = require('../telegram'),
+        sendToTelegram = telegram.sendToTelegram,
+        receiveTelegram = telegram.receiveTelegram;
 
-    telegram.on('text', function(message) {
-
-        //Reply to the same chat
-        const chatId = message.chat.id;
-
-        chatscript.reply(chatId, message.text, (err, reply)=>{
-            if (err) return console.error(err);
-            //Send message to chat
-            telegram
-                .sendMessage(chatId, reply)
-                .catch  ( err => console.error(err)); //promise
+    //Chatscript replies to recieved message
+    receiveTelegram((chatId, text) => {
+        chatscript.reply(chatId, text, (err, reply)=>{
+            if (err) return console.error(err);            
+            sendToTelegram(chatId, reply);
         });
-    });
+    });  
 
 }
 
@@ -52,22 +53,19 @@ if (config.telegram.active){
 if (config.slack.active) {
     //Import can't be in statement so using require
     const slack = require('../slack'),
-          SLACK_EVENTS = slack.SLACK_EVENTS,
-          rtm = slack.rtm,
-          sendToSlack = slack.sendToSlack;
+          sendToSlack = slack.sendToSlack,
+          receiveSlack = slack.receiveSlack;
 
-
-    rtm.on(SLACK_EVENTS.MESSAGE, message => {
-        // Listens to all `message` events from the team
-        //Don't respond to own message or channel joins
-        if (message.user === rtm.activeUserId || message.subtype === "channel_join") return;
-
-        chatscript.reply(message.user, message.text, (err, reply)=>{
+    //Chatscript replies to recieved message
+    receiveSlack((user, text, channel) => {
+        chatscript.reply(user, text, (err, reply)=>{
             if (err) return console.error(err);            
-            sendToSlack('this is a test message', message.channel);
+            sendToSlack(reply, channel);
         });
+    });        
 
-    });
+
+
 
 }
 
